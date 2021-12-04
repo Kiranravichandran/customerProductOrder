@@ -1,0 +1,54 @@
+service: sampleMySql
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+
+# you can overwrite defaults here
+stage: dev
+region: us-east-1
+
+# plugin to run it locally
+plugins:
+  - serverless-offline
+  - serverless-webpack
+
+# you can add packaging information here
+package:
+ include:
+    - node_modules/serverless-offline/**
+
+# lambda functions
+functions:
+  # sample hello world api
+  customerCrud:
+    # path of the file where the function is written
+    handler: src/api/handler.customerCrud
+    events:
+      - http:
+         # http request path
+         path: /customer/{action}
+         method: POST
+
+  productCrud:
+    # path of the file where the function is written
+    handler: src/api/handler.productCrud
+    events:
+      - http:
+         # http request path
+         path: /product/{action}
+         method: POST
+
+  placeOrder:
+    # path of the file where the function is written
+    handler: src/api/handler.orderCrud
+    events:
+      - http:
+         # http request path
+         path: /order/{action}
+         method: POST
